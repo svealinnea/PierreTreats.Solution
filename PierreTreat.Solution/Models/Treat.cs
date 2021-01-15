@@ -15,6 +15,7 @@ namespace PierreTreat.Models
 
         [DisplayName("Treat Name")]
         public string TreatName { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public virtual ICollection<TreatFlavor> JoinEntries { get; set; } //IColletion is basically a list. The ICollection<T> interface is the base interface for classes in the System.Collections.Generic namespace.
     }
 }

@@ -15,15 +15,18 @@ namespace PierreTreat.Controllers
   public class TreatsController : Controller 
   {
     private readonly PierreTreatContext _db; 
-    public TreatsController(PierreTreatContext db) 
+    private readonly UserManager<ApplicationUser> _userManager;
+    public TreatsController(UserManager<ApplicationUser> userManager, PierreTreatContext db) 
     {
       _db = db;
     }
 
-    public ActionResult Index()
+    public async Task<ActionResult> Index()
     {
-      List<Treat> model = _db.Treats.ToList();
-      return View(model);
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+        var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
+        return View(userTreats);
     }
 
     public ActionResult Create()
@@ -32,11 +35,18 @@ namespace PierreTreat.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Treat treat)
+    public async Task<ActionResult> Create(Treat treat, int FlavorId)
     {
-      _db.Treats.Add(treat);
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+     var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var currentUser = await _userManager.FindByIdAsync(userId);
+    treat.User = currentUser;
+    _db.Treats.Add(treat);
+    if (FlavorId != 0)
+    {
+        _db.TreatFlavor.Add(new TreatFlavor() { FlavorId = FlavorId, TreatId = treat.TreatId });
+    }
+    _db.SaveChanges();
+    return RedirectToAction("Index");
     }
 
     public ActionResult Details(int id)

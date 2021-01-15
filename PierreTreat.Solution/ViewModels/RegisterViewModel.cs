@@ -10,13 +10,13 @@ namespace PierreTreat.Models
     public string Email { get; set; }
 
     [Required]
-    [EmailAddress]
-    [Display(Name= "Password")]
+    [DataType(DataType.Password)]
+    [Display(Name = "Password")]
     public string Password { get; set; }
 
     [DataType(DataType.Password)]
     [Display(Name = "Confirm Your Password")]
-    [Compare("Password", ErrorMessage = "ERROR The password and confirmation password do not match")]
+    [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; }
   }
 }
