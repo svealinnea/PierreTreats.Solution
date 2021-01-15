@@ -2,7 +2,36 @@
   Layout = "_Layout";
 }
 
+@using PierreTreat.Models;
+
 <h1>Welcome To Pierre's Treats and Sweets!</h1>
-<p>@Html.ActionLink("See all flavors", "Index", "Flavors")</p>
-<p>@Html.ActionLink("See all treats", "Index", "Treats")</p>
+<br>
+<h5 class ="indexName">Today's Featured Treats: </h5>
+
+@* <p>@Html.ActionLink("Add a new treat", "Create", "Treats")</p> *@
+
+@if(ViewBag.TreatList.Count == 0)
+{
+  <h4>No treats have been added yet today!</h4>
+} 
+
+@foreach (Treat treat in ViewBag.Treats)
+{
+  <li>@Html.ActionLink($"{treat.TreatName}", "Details", "Treats", new { id = treat.TreatId })</li>
+}
+<br>
+<h5 class="indexName">Today's Featured Flavors: </h5>
+
+@* <p>@Html.ActionLink("Add a new flavor", "Create", "Flavors")</p> *@
+
+@if(ViewBag.FlavorList.Count == 0)
+{
+  <h4>No flavors have been added yet today!</h4>
+} 
+
+@foreach (Flavor flavor in ViewBag.Flavors)
+{
+  <li>@Html.ActionLink($"{flavor.FlavorName}", "Details", "Flavors", new { id = flavor.FlavorId })</li>
+}
+<br>
 <p>@Html.ActionLink("Create an account", "Index", "Account")</p>

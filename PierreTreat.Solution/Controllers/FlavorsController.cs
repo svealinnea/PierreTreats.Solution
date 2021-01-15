@@ -103,8 +103,10 @@ namespace PierreTreat.Controllers
     }
 
     [Authorize]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
       var thisFlavor = _db.Flavors.FirstOrDefault(flavors => flavors.FlavorId == id);
       return View(thisFlavor);
     }
@@ -117,10 +119,13 @@ namespace PierreTreat.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-  
+    [Authorize]
+
     [HttpPost]
-    public ActionResult DeleteTreat(int joinId)
+    public async Task<ActionResult> DeleteTreat(int joinId)
     {
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
       var joinEntry = _db.TreatFlavor.FirstOrDefault(entry => entry.TreatFlavorId == joinId);
       _db.TreatFlavor.Remove(joinEntry);
       _db.SaveChanges();
