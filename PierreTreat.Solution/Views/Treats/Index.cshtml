@@ -21,10 +21,10 @@ else
   <h3>No treats have been added.</h3>
 } 
 
-@foreach (Treat treat in Model)
+@* @foreach (Treat treat in Model)
 {
   <li>@Html.ActionLink($"{treat.TreatName}", "Details", new { id = treat.TreatId })</li>
-}
+} *@
 
 <p>@Html.ActionLink("Add new treat", "Create")</p>
 

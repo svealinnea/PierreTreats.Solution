@@ -11,24 +11,27 @@ using System.Security.Claims;
 using System;
 namespace PierreTreat.Controllers
 {
-  [Authorize]
+  // [Authorize]
   public class TreatsController : Controller 
   {
     private readonly PierreTreatContext _db; 
     private readonly UserManager<ApplicationUser> _userManager;
     public TreatsController(UserManager<ApplicationUser> userManager, PierreTreatContext db) 
     {
+      _userManager = userManager;
       _db = db;
     }
 
-    public async Task<ActionResult> Index()
+    public ActionResult Index()
     {
-      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      var currentUser = await _userManager.FindByIdAsync(userId);
-        var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
-        return View(userTreats);
+      // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      // var currentUser = await _userManager.FindByIdAsync(userId);
+      //   var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      //   return View(userTreats);
+      return View(_db.Treats.ToList());
     }
-
+    
+    [Authorize]
     public ActionResult Create()
     {
       return View();
@@ -37,7 +40,7 @@ namespace PierreTreat.Controllers
     [HttpPost]
     public async Task<ActionResult> Create(Treat treat, int FlavorId)
     {
-     var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     var currentUser = await _userManager.FindByIdAsync(userId);
     treat.User = currentUser;
     _db.Treats.Add(treat);
@@ -58,6 +61,7 @@ namespace PierreTreat.Controllers
       return View(thisTreat);
     }
 
+    //[Authorize]
     public ActionResult Edit(int id)
     {
       var thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id); 
@@ -72,6 +76,7 @@ namespace PierreTreat.Controllers
       return RedirectToAction("Index"); 
     }
 
+    //[Authorize]
     public ActionResult Delete(int id)
     {
       var thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id);

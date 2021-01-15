@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PierreTreat.Models;
 
 namespace PierreTreat.Migrations
 {
     [DbContext(typeof(PierreTreatContext))]
-    partial class PierreTreatContextModelSnapshot : ModelSnapshot
+    [Migration("20210115214817_Authorization")]
+    partial class Authorization
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
