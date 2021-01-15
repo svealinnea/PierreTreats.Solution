@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 
 namespace PierreTreat.Models
 {
-  public class PierreTreatContext : DbContext
+  public class PierreTreatContext : IdentityDbContext<ApplicationUser>
   {
-    public virtual DbSet<Treat> Treats { get; set; } //DBSets are new tables being created. 
+    public virtual DbSet<Treat> Treats { get; set; } 
     public DbSet<Flavor> Flavors { get; set; }
 
     public DbSet<TreatFlavor> TreatFlavor { get; set; }
