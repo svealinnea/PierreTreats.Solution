@@ -11,7 +11,6 @@ using System.Security.Claims;
 using System;
 namespace PierreTreat.Controllers
 {
-  // [Authorize]
   public class TreatsController : Controller 
   {
     private readonly PierreTreatContext _db; 
@@ -55,7 +54,7 @@ namespace PierreTreat.Controllers
           .ThenInclude(join => join.Flavor) 
           .FirstOrDefault(treat => treat.TreatId == id);
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      ViewBag.IsCurrentUser = userId != null ? userId == thisTreat.User.Id : false;
+      // ViewBag.IsCurrentUser = userId != null ? userId == thisTreat.User.Id : false;
       return View(thisTreat);
     }
 
