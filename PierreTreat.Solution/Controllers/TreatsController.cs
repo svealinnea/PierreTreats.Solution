@@ -24,10 +24,6 @@ namespace PierreTreat.Controllers
 
     public ActionResult Index()
     {
-      // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      // var currentUser = await _userManager.FindByIdAsync(userId);
-      //   var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
-      //   return View(userTreats);
       return View(_db.Treats.ToList());
     }
     
@@ -57,15 +53,24 @@ namespace PierreTreat.Controllers
       var thisTreat = _db.Treats 
           .Include(treat => treat.JoinEntries) 
           .ThenInclude(join => join.Flavor) 
-          .FirstOrDefault(treat => treat.TreatId == id); 
+          .FirstOrDefault(treat => treat.TreatId == id);
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      ViewBag.IsCurrentUser = userId != null ? userId == thisTreat.User.Id : false;
       return View(thisTreat);
     }
 
-    //[Authorize]
-    public ActionResult Edit(int id)
+    [Authorize]
+    public async Task<ActionResult> Edit(int id)
     {
-      var thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id); 
-      return  View(thisTreat);
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      var thisTreat = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(treats => treats.TreatId == id);
+      if (thisTreat == null)
+      {
+        return RedirectToAction("Details", new {id = id});
+      }
+      ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name"); 
+      return View(thisTreat);
     }
 
     [HttpPost]
@@ -76,7 +81,7 @@ namespace PierreTreat.Controllers
       return RedirectToAction("Index"); 
     }
 
-    //[Authorize]
+    [Authorize]
     public ActionResult Delete(int id)
     {
       var thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id);
