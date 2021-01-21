@@ -12,6 +12,6 @@ namespace PierreTreat.Models
     public int FlavorId { get; set; }
     public string FlavorName { get; set; }
 
-    public ICollection<TreatFlavor> JoinEntries { get; }
+    public ICollection<TreatFlavor> JoinEntries { get; set; }
   }
 }  

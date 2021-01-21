@@ -8,8 +8,6 @@
 <br>
 <h5 class ="indexName">Today's Featured Treats: </h5>
 
-@* <p>@Html.ActionLink("Add a new treat", "Create", "Treats")</p> *@
-
 @if(ViewBag.TreatList.Count == 0)
 {
   <h4>No treats have been added yet today!</h4>
@@ -20,9 +18,11 @@
   <li>@Html.ActionLink($"{treat.TreatName}", "Details", "Treats", new { id = treat.TreatId })</li>
 }
 <br>
+<p>@Html.ActionLink("Add a new treat", "Create", "Treats")</p>
+<br>
 <h5 class="indexName">Today's Featured Flavors: </h5>
 
-@* <p>@Html.ActionLink("Add a new flavor", "Create", "Flavors")</p> *@
+
 
 @if(ViewBag.FlavorList.Count == 0)
 {
@@ -33,5 +33,7 @@
 {
   <li>@Html.ActionLink($"{flavor.FlavorName}", "Details", "Flavors", new { id = flavor.FlavorId })</li>
 }
+<br>
+<p>@Html.ActionLink("Add a new flavor", "Create", "Flavors")</p> 
 <br>
 <p>@Html.ActionLink("Create an account", "Index", "Account")</p>
